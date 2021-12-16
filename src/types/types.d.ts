@@ -9,4 +9,7 @@ export interface RatelimitOptions {
     windowMs: number;
     max: number;
     store: Store;
+    headers: boolean;
+    message: string;
+    statusCode: number;
 }
