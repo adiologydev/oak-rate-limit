@@ -9,5 +9,5 @@ export const DefaultOptions: RatelimitOptions = {
     headers: true,
     message: "Too many requests, please try again later.",
     statusCode: 429,
-    onRateLimit
+    onRateLimit: (ctx, next, opt) => onRateLimit(ctx, next, opt)
 }
