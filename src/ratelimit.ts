@@ -6,11 +6,13 @@ export const RateLimiter = (options?: Partial<RatelimitOptions>): Middleware => 
     const opt = { ...DefaultOptions, ...options };
 
     if(typeof opt.onRateLimit !== "function") throw "onRateLimit must be a function.";
+    if(typeof opt.skip !== "function") throw "skip must be a function.";
 
     return async (ctx: Context, next) => {
         const { ip } = ctx.request;
         const timestamp = Date.now();
 
+        if(await opt.skip(ctx)) return next();
         if(opt.headers) ctx.response.headers.set("X-RateLimit-Limit", opt.max.toString());
 
         if (opt.store.has(ip) && timestamp - opt.store.get(ip)!.lastRequestTimestamp > opt.windowMs) opt.store.delete(ip);

@@ -34,6 +34,10 @@ app.use(rateLimit);
 
 Define a custom method to handle when the rate limit has been reached. The default implementation will send a 429 status code and the message defined in the message option.
 
+`skip(ctx)`
+
+Define a custom method to skip/whitelist the rate limit. The default implementation will return false.
+
 ## Liked The Project?
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W31Z2B3)
 

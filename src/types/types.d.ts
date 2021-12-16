@@ -13,5 +13,6 @@ export interface RatelimitOptions {
     headers: boolean;
     message: string;
     statusCode: number;
+    skip: (ctx: Context) => Promise<boolean> | boolean;
     onRateLimit: ((ctx: Context, next: () => Promise<unknown>, opt: RatelimitOptions) => unknown);
 }
