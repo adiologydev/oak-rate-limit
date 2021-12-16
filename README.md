@@ -13,7 +13,7 @@ A Simple Rate Limiter for Oak Server on Deno. It's currently under development a
 
 ## Installation
 ```ts
-import { RateLimiter } from "https://deno.land/x/oak-rate-limit/mod.ts";
+import { RateLimiter } from "https://deno.land/x/oak_rate_limit/mod.ts";
 
 const rateLimit = RateLimiter({
   store: STORE, // Using MapStore by default.

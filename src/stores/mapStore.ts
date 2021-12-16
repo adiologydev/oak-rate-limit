@@ -1,5 +1,5 @@
 import type { Ratelimit } from "../types/types.d.ts";
-import { Store } from "./store.ts";
+import { Store } from "./AbstractStore.ts";
 
 export class MapStore extends Store {
     private readonly store: Map<string, Ratelimit>;
