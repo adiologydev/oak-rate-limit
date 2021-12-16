@@ -2,19 +2,19 @@ import type { Ratelimit } from "../types/types.d.ts";
 
 export class Store {
 
-    public get(ip: string): Ratelimit | undefined {
+    public get(_ip: string): Ratelimit | undefined {
         throw "Not implemented";
     }
 
-    public set(ip: string, ratelimit: Ratelimit): void {
+    public set(_ip: string, _ratelimit: Ratelimit): void {
         throw "Not implemented";
     }
 
-    public delete(ip: string): void {
+    public delete(_ip: string): void {
         throw "Not implemented";
     }
 
-    public has(ip: string): boolean {
+    public has(_ip: string): boolean {
         throw "Not implemented";
     }
 }

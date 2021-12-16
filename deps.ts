@@ -1,1 +1,1 @@
-export type { Middleware } from "https://deno.land/x/oak/mod.ts";
+export type { Middleware, Context } from "https://deno.land/x/oak/mod.ts";

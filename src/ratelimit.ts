@@ -1,4 +1,4 @@
-import { Middleware } from "../deps.ts";
+import { Middleware, Context } from "../deps.ts";
 import { MapStore } from "./stores/mapStore.ts";
 import type { RatelimitOptions } from "./types/types.d.ts";
 
@@ -9,7 +9,7 @@ export const RateLimiter = (options: RatelimitOptions): Middleware => {
         store: options.store || new MapStore(),
     });
 
-    return async (ctx: any, next: any) => {
+    return async (ctx: Context, next) => {
         const { ip } = ctx.request;
         const timestamp = Date.now();
 

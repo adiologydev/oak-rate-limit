@@ -1,4 +1,4 @@
-import { Store } from "../stores/store.ts";
+import { Store } from "../stores/AbstractStore.ts";
 
 export interface Ratelimit {
     remaining: number;
