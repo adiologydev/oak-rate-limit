@@ -1,5 +1,6 @@
 import { RatelimitOptions } from "../types/types.d.ts";
 import { MapStore } from "../stores/mapStore.ts";
+import { onRateLimit } from "../ratelimit.ts";
 
 export const DefaultOptions: RatelimitOptions = {
     windowMs: 60 * 1000,
@@ -7,5 +8,6 @@ export const DefaultOptions: RatelimitOptions = {
     store: new MapStore(),
     headers: true,
     message: "Too many requests, please try again later.",
-    statusCode: 429
+    statusCode: 429,
+    onRateLimit
 }

@@ -9,9 +9,11 @@ Rate limiter for Oak Server on Deno
 A Simple Rate Limiter for Oak Server on Deno inspired by express-rate-limit. It's currently under development and if you'd like to contribute, feel free to make a PR!
 
 ## Features
-- Support for stores such as Map, Redis, Memcached, etc. (Only Map is implemented for now)
+- Custom Cache Stores Support. Currently using Map by default (more coming soon).
+- Timestamp Comparisons instead of Intervals for Efficiency.
+- Custom handlers, window duration, max requests, status code, and error message support.
 
-## Installation
+## Usage
 ```ts
 import { RateLimiter } from "https://deno.land/x/oak_rate_limit/mod.ts";
 
@@ -26,6 +28,11 @@ const rateLimit = RateLimiter({
 
 app.use(rateLimit);
 ```
+
+## Configuration
+`onRateLimit(opt, ctx, next)`
+
+Define a custom method to handle when the rate limit has been reached. The default implementation will send a 429 status code and the message defined in the message option.
 
 ## Liked The Project?
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W31Z2B3)

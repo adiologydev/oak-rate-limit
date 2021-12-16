@@ -1,3 +1,4 @@
+import { Context } from "../../deps.ts";
 import { Store } from "../stores/AbstractStore.ts";
 
 export interface Ratelimit {
@@ -12,4 +13,5 @@ export interface RatelimitOptions {
     headers: boolean;
     message: string;
     statusCode: number;
+    onRateLimit: ((ctx: Context, next: () => Promise<unknown>, opt: RatelimitOptions) => unknown);
 }
