@@ -6,7 +6,7 @@ export interface Ratelimit {
 }
 
 export interface RatelimitOptions {
-    windowMs?: number;
-    max?: number;
-    store?: Store;
+    windowMs: number;
+    max: number;
+    store: Store;
 }

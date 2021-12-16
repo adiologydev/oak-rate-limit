@@ -1,6 +1,6 @@
 import type { Ratelimit } from "../types/types.d.ts";
 
-export class Store {
+export abstract class Store {
 
     public get(_ip: string): Ratelimit | undefined {
         throw "Not implemented";
