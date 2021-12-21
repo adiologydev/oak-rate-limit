@@ -2,10 +2,6 @@ import { connect } from "../../deps.ts";
 import type { Ratelimit } from "../types/types.d.ts";
 import { Store } from "./AbstractStore.ts";
 
-type Bulk<T> = BulkString | BulkNil;
-type BulkString = string;
-type BulkNil = string;
-
 export class RedisStore extends Store {
     private readonly store;
 
