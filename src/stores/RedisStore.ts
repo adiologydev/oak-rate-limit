@@ -18,8 +18,9 @@ export class RedisStore extends Store {
     }
 
     public async get(ip: string) {
-        // @ts-ignore
-        return JSON.parse(await (await this.store).get(ip))
+        const data = await (await this.store).get(ip)
+        if (!data) return
+        return JSON.parse(data)
     }
 
     public async set(ip: string, ratelimit: Ratelimit) {
