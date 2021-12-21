@@ -2,7 +2,7 @@ import { Bulk } from "https://deno.land/x/redis@v0.25.0/mod.ts";
 import type { Ratelimit } from "../types/types.d.ts";
 
 export abstract class Store {
-  public get(_ip: string): Ratelimit | Promise<Ratelimit | undefined> | undefined {
+  public get(_ip: string): Ratelimit | Promise<Ratelimit> | undefined {
     throw "Not implemented";
   }
 
