@@ -1,4 +1,3 @@
-import { Bulk } from "https://deno.land/x/redis@v0.25.0/mod.ts";
 import type { Ratelimit } from "../types/types.d.ts";
 
 export abstract class Store {
@@ -6,15 +5,15 @@ export abstract class Store {
     throw "Not implemented";
   }
 
-  public set(_ip: string, _ratelimit: Ratelimit): void {
+  public set(_ip: string, _ratelimit: Ratelimit): void | Promise<void> {
     throw "Not implemented";
   }
 
-  public delete(_ip: string): void {
+  public delete(_ip: string): void | Promise<void> {
     throw "Not implemented";
   }
 
-  public has(_ip: string): boolean | Promise<number> {
+  public has(_ip: string): boolean | Promise<boolean> {
     throw "Not implemented";
   }
 }
