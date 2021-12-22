@@ -16,15 +16,8 @@ export const RateLimiter = (
     const { ip } = ctx.request;
     const timestamp = Date.now();
 
-    const GET = await opt.store.get(ip)!
-    const SET = async (ip: string, options: Ratelimit) => {
-      await opt.store.set(ip, {
-        remaining: options.remaining,
-        lastRequestTimestamp: options.lastRequestTimestamp,
-      });
-    }
-    const DELETE = await opt.store.delete(ip)
-    const HAS = await opt.store.has(ip)
+    const getStoreItem = await opt.store.get(ip)!
+    const checkStoreItem = await opt.store.has(ip)
 
 
     if (await opt.skip(ctx)) return next();
@@ -33,19 +26,19 @@ export const RateLimiter = (
     }
 
     if (
-      HAS &&
-      timestamp - GET.lastRequestTimestamp > opt.windowMs
+      checkStoreItem &&
+      timestamp - getStoreItem.lastRequestTimestamp > opt.windowMs
     ) {
-      DELETE;
+      await opt.store.delete(ip);
     }
-    if (!HAS) {
-      await SET(ip, {
+    if (!checkStoreItem) {
+      await opt.store.set(ip, {
         remaining: opt.max,
         lastRequestTimestamp: timestamp,
       });
     }
 
-    if (HAS && GET.remaining === 0) {
+    if (checkStoreItem && getStoreItem.remaining === 0) {
       opt.onRateLimit(ctx, next, opt);
     } else {
       await next();
@@ -53,12 +46,12 @@ export const RateLimiter = (
         ctx.response.headers.set(
           "X-RateLimit-Remaining",
           await opt.store.get(ip)
-            ? GET.remaining.toString()
+            ? getStoreItem.remaining.toString()
             : opt.max.toString(),
         );
       }
-      await SET(ip, {
-        remaining: GET.remaining - 1,
+      await opt.store.set(ip, {
+        remaining: getStoreItem.remaining - 1,
         lastRequestTimestamp: timestamp,
       });
     }
