@@ -1,15 +1,21 @@
-import { connect } from "../../deps.ts";
+import { connect, RedisConnectOptions } from "https://deno.land/x/redis@v0.25.0/mod.ts"
 import type { Ratelimit } from "../types/types.d.ts";
 import { Store } from "./AbstractStore.ts";
 
 export class RedisStore extends Store {
     private readonly store;
 
-    constructor(hostname?: string, port?: number) {
+    constructor(options: RedisConnectOptions) {
         super();
         this.store = connect({
-            hostname: hostname ?? "localhost",
-            port
+            hostname: options.hostname,
+            port: options.port,
+            tls: options.tls,
+            db: options.db,
+            password: options.password,
+            name: options.name,
+            maxRetryCount: options.maxRetryCount,
+            retryInterval: options.retryInterval,
         })
     }
 
@@ -28,6 +34,7 @@ export class RedisStore extends Store {
     }
 
     public async has(ip: string) {
-        return await (await this.store).exists(ip)
+        const VALUE = (await this.store).exists(ip)
+        return !!await VALUE
     }
 }
