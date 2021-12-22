@@ -1,5 +1,5 @@
 import { Context, Middleware } from "../deps.ts";
-import type { Ratelimit, RatelimitOptions } from "./types/types.d.ts";
+import type { RatelimitOptions } from "./types/types.d.ts";
 import { DefaultOptions } from "./utils/defaults.ts";
 
 export const RateLimiter = (
@@ -16,36 +16,25 @@ export const RateLimiter = (
     const { ip } = ctx.request;
     const timestamp = Date.now();
 
-    const GET = await opt.store.get(ip)!
-    const SET = async (ip: string, options: Ratelimit) => {
-      await opt.store.set(ip, {
-        remaining: options.remaining,
-        lastRequestTimestamp: options.lastRequestTimestamp,
-      });
-    }
-    const DELETE = await opt.store.delete(ip)
-    const HAS = await opt.store.has(ip)
-
-
     if (await opt.skip(ctx)) return next();
     if (opt.headers) {
       ctx.response.headers.set("X-RateLimit-Limit", opt.max.toString());
     }
 
     if (
-      HAS &&
-      timestamp - GET.lastRequestTimestamp > opt.windowMs
+      await opt.store.has(ip) &&
+      timestamp - (await opt.store.get(ip)!).lastRequestTimestamp > opt.windowMs
     ) {
-      DELETE;
+      opt.store.delete(ip);
     }
-    if (!HAS) {
-      await SET(ip, {
+    if (!await opt.store.has(ip)) {
+      opt.store.set(ip, {
         remaining: opt.max,
         lastRequestTimestamp: timestamp,
       });
     }
 
-    if (HAS && GET.remaining === 0) {
+    if (await opt.store.has(ip) && (await opt.store.get(ip)!).remaining === 0) {
       opt.onRateLimit(ctx, next, opt);
     } else {
       await next();
@@ -53,24 +42,24 @@ export const RateLimiter = (
         ctx.response.headers.set(
           "X-RateLimit-Remaining",
           await opt.store.get(ip)
-            ? GET.remaining.toString()
+            ? (await opt.store.get(ip)!).remaining.toString()
             : opt.max.toString(),
         );
       }
-      await SET(ip, {
-        remaining: GET.remaining - 1,
+      opt.store.set(ip, {
+        remaining: (await opt.store.get(ip)!).remaining - 1,
         lastRequestTimestamp: timestamp,
       });
     }
   };
 };
 
-export const onRateLimit = async (
+export const onRateLimit = (
   ctx: Context,
   _next: () => Promise<unknown>,
   opt: RatelimitOptions,
-): Promise<unknown> => {
-  await opt.store.set(ctx.request.ip, {
+): unknown => {
+  opt.store.set(ctx.request.ip, {
     remaining: 0,
     lastRequestTimestamp: Date.now(),
   });
