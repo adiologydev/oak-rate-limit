@@ -5,11 +5,11 @@ export abstract class Store {
     throw "Not implemented";
   }
 
-  public set(_ip: string, _ratelimit: Ratelimit): void | Promise<void> {
+  public set(_ip: string, _ratelimit: Ratelimit): void | Promise<Ratelimit> {
     throw "Not implemented";
   }
 
-  public delete(_ip: string): void | Promise<void> {
+  public delete(_ip: string): void | Promise<boolean> {
     throw "Not implemented";
   }
 
