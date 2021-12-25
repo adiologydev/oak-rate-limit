@@ -1,5 +1,5 @@
 import { RatelimitOptions } from "../types/types.d.ts";
-import { MapStore } from "../stores/mapStore.ts";
+import { MapStore } from "../stores/MapStore.ts";
 import { onRateLimit } from "../ratelimit.ts";
 
 export const DefaultOptions: RatelimitOptions = {

@@ -9,16 +9,20 @@ export class MapStore extends Store {
     this.store = new Map<string, Ratelimit>();
   }
 
+  public init() {
+    return;
+  }
+
   public get(ip: string) {
     return this.store.get(ip);
   }
 
   public set(ip: string, ratelimit: Ratelimit) {
-    this.store.set(ip, ratelimit);
+    return this.store.set(ip, ratelimit);
   }
 
   public delete(ip: string) {
-    this.store.delete(ip);
+    return this.store.delete(ip);
   }
 
   public has(ip: string) {

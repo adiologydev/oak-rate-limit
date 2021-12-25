@@ -2,10 +2,12 @@ import { Context, Middleware } from "../deps.ts";
 import type { RatelimitOptions } from "./types/types.d.ts";
 import { DefaultOptions } from "./utils/defaults.ts";
 
-export const RateLimiter = (
+export const RateLimiter = async (
   options?: Partial<RatelimitOptions>,
-): Middleware => {
+): Promise<Middleware> => {
   const opt = { ...DefaultOptions, ...options };
+
+  await opt.store.init();
 
   if (typeof opt.onRateLimit !== "function") {
     throw "onRateLimit must be a function.";
@@ -22,8 +24,9 @@ export const RateLimiter = (
     }
 
     if (
-      opt.store.has(ip) &&
-      timestamp - opt.store.get(ip)!.lastRequestTimestamp > opt.windowMs
+      await opt.store.has(ip) &&
+      timestamp - (await opt.store.get(ip)!).lastRequestTimestamp >
+        opt.windowMs
     ) {
       opt.store.delete(ip);
     }
@@ -34,32 +37,32 @@ export const RateLimiter = (
       });
     }
 
-    if (opt.store.has(ip) && opt.store.get(ip)!.remaining === 0) {
-      opt.onRateLimit(ctx, next, opt);
+    if (await opt.store.has(ip) && (await opt.store.get(ip)!).remaining === 0) {
+      await opt.onRateLimit(ctx, next, opt);
     } else {
       await next();
       if (opt.headers) {
         ctx.response.headers.set(
           "X-RateLimit-Remaining",
           opt.store.get(ip)
-            ? opt.store.get(ip)!.remaining.toString()
+            ? (await opt.store.get(ip)!).remaining.toString()
             : opt.max.toString(),
         );
       }
       opt.store.set(ip, {
-        remaining: opt.store.get(ip)!.remaining - 1,
+        remaining: (await opt.store.get(ip)!).remaining - 1,
         lastRequestTimestamp: timestamp,
       });
     }
   };
 };
 
-export const onRateLimit = (
+export const onRateLimit = async (
   ctx: Context,
   _next: () => Promise<unknown>,
   opt: RatelimitOptions,
-): unknown => {
-  opt.store.set(ctx.request.ip, {
+): Promise<unknown> => {
+  await opt.store.set(ctx.request.ip, {
     remaining: 0,
     lastRequestTimestamp: Date.now(),
   });
