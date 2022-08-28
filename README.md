@@ -2,7 +2,7 @@
 
 # oak-rate-limit
 
-[![deno version](https://img.shields.io/badge/deno-^1.16.4-lightgrey?logo=deno&style=flat-square)](https://github.com/denoland/deno)
+[![deno version](https://img.shields.io/badge/deno-^1.23.3-lightgrey?logo=deno&style=flat-square)](https://github.com/denoland/deno)
 [![Discord](https://img.shields.io/discord/265485800668528651?color=697EC4&label=Discord&logo=discord&logoColor=FDFEFE&style=flat-square)](https://discord.gg/cu8aMYw)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/AdityaTD/oak-rate-limit?include_prereleases)](https://deno.land/x/oak_rate_limit)
 
@@ -38,7 +38,7 @@ const rateLimit = RateLimiter({
   statusCode: 429, // Default status code if rate limit reached.
 });
 
-app.use(rateLimit);
+app.use(await rateLimit);
 ```
 
 ## Configuration

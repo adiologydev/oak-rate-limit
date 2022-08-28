@@ -2,7 +2,7 @@ import {
   connect,
   Redis,
   RedisConnectOptions,
-} from "https://deno.land/x/redis@v0.25.0/mod.ts";
+} from "https://deno.land/x/redis@v0.26.0/mod.ts";
 import type { Ratelimit } from "../types/types.d.ts";
 import { Store } from "./AbstractStore.ts";
 
@@ -26,7 +26,6 @@ export class RedisStore extends Store {
       password: this.options.password,
       name: this.options.name,
       maxRetryCount: this.options.maxRetryCount,
-      retryInterval: this.options.retryInterval,
     });
 
     this.initialized = true;
