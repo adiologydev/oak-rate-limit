@@ -1,5 +1,5 @@
-import { Context } from "../../deps.ts";
-import { Store } from "../stores/AbstractStore.ts";
+import { Context } from "oak";
+import { Store } from "stores";
 
 export interface Ratelimit {
   remaining: number;

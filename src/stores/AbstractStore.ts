@@ -1,4 +1,4 @@
-import type { Ratelimit } from "../types/types.d.ts";
+import type { Ratelimit } from "types";
 
 export abstract class Store {
   public init(): Promise<void> | void {

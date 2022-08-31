@@ -1,6 +1,6 @@
+import { MapStore } from "stores";
+import { RatelimitOptions } from "types";
 import { onRateLimit } from "../ratelimit.ts";
-import { MapStore } from "../stores/MapStore.ts";
-import { RatelimitOptions } from "../types/types.d.ts";
 
 export const DefaultOptions: RatelimitOptions = {
   windowMs: 60 * 1000,
