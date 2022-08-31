@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "test": "deno test --allow-net ./tests/mod.ts"
+  },
+  "importMap": "./import_map.json"
+}
