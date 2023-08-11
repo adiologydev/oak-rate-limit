@@ -20,7 +20,10 @@ export const RateLimiter = async (
 
     if (await opt.skip(ctx)) return next();
     if (opt.headers) {
-      ctx.response.headers.set("X-RateLimit-Limit", opt.max.toString());
+      ctx.response.headers.set(
+        "X-RateLimit-Limit",
+        await opt.max(ctx).toString(),
+      );
     }
 
     if (
@@ -32,7 +35,7 @@ export const RateLimiter = async (
     }
     if (!opt.store.has(ip)) {
       opt.store.set(ip, {
-        remaining: opt.max,
+        remaining: await opt.max(ctx),
         lastRequestTimestamp: timestamp,
       });
     }
@@ -46,7 +49,7 @@ export const RateLimiter = async (
           "X-RateLimit-Remaining",
           opt.store.get(ip)
             ? (await opt.store.get(ip)!).remaining.toString()
-            : opt.max.toString(),
+            : await opt.max(ctx).toString(),
         );
       }
       opt.store.set(ip, {
