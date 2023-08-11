@@ -1,10 +1,10 @@
 import {
   connect,
   Redis,
-  RedisConnectOptions,
+  RedisConnectOptions
 } from "https://deno.land/x/redis@v0.26.0/mod.ts";
-import type { Ratelimit } from "../types/types.d.ts";
-import { Store } from "./AbstractStore.ts";
+import { Store } from "stores";
+import type { Ratelimit } from "types";
 
 export class RedisStore extends Store {
   private store: Redis | undefined;

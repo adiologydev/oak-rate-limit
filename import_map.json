@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "oak": "https://deno.land/x/oak@v11.1.0/mod.ts",
+    "stores": "./src/stores/mod.ts",
+    "utils": "./src/utils/defaults.ts",
+    "types": "./src/types/types.d.ts"
+  }
+}

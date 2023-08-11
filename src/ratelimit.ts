@@ -1,6 +1,6 @@
-import { Context, Middleware } from "../deps.ts";
-import type { RatelimitOptions } from "./types/types.d.ts";
-import { DefaultOptions } from "./utils/defaults.ts";
+import { Context, Middleware } from "oak";
+import type { RatelimitOptions } from "types";
+import { DefaultOptions } from "utils";
 
 export const RateLimiter = async (
   options?: Partial<RatelimitOptions>,
@@ -29,7 +29,7 @@ export const RateLimiter = async (
     if (
       await opt.store.has(ip) &&
       timestamp - (await opt.store.get(ip)!).lastRequestTimestamp >
-        opt.windowMs
+      opt.windowMs
     ) {
       opt.store.delete(ip);
     }
