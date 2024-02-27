@@ -43,7 +43,7 @@ app.use(await rateLimit);
 
 ## Configuration
 
-`onRateLimit(opt, ctx, next)`
+`onRateLimit(ctx, next, opt)`
 
 Define a custom method to handle when the rate limit has been reached. The
 default implementation will send a 429 status code and the message defined in
